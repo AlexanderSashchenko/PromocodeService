@@ -1,5 +1,6 @@
 package com.example.promocodeService.model;
 
+import com.example.promocodeService.model.constants.Status;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,10 +28,10 @@ public class Order {
 
     }
 
-    public Order(User user, Promocode promocode, String status) {
+    public Order(User user, Promocode promocode, Status status) {
         this.user = user;
         this.promocode = promocode;
-        this.status = status;
+        this.status = status.toString();
     }
 
     public Long getId() {
@@ -57,12 +58,12 @@ public class Order {
         this.promocode = promocode;
     }
 
-    public String getStatus() {
-        return status;
+    public Status getStatus() {
+        return Status.valueOf(status);
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(Status status) {
+        this.status = status.toString();
     }
 
     @Override
@@ -71,7 +72,7 @@ public class Order {
                 "id=" + id +
                 ", user=" + user +
                 ", promocode=" + promocode +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 '}';
     }
 }
