@@ -23,17 +23,16 @@ public class PromocodeService {
 
     public Mono<String> createNewPromocode() {
         User user = userService.saveUser();
-        Mono<String> promocodeMono = requestHandler.requestPromocode(user.getId());
-        savePromocode(user.getId(), promocodeMono);
-        return promocodeMono;
-    }
-
-    public void savePromocode(Long userId, Mono<String> promocodeMono) {
-        User user = userService.getById(userId);
-        promocodeMono.subscribe(promocodeValue -> {
+        return requestHandler.requestPromocode(user.getId())
+                .doOnNext(promocodeValue -> {
             Promocode promocode = new Promocode(promocodeValue, user);
             promocodeRepository.save(promocode);
         });
+    }
 
+    public String getPromocodeValueByUserId(Long userId) {
+        return promocodeRepository.findPromocodeByUser(userService.getById(userId))
+                .orElseThrow(() -> new RuntimeException("This user has not generated a promocode yet!"))
+                .getValue();
     }
 }

@@ -28,6 +28,7 @@ public class Promocode {
 
     public Promocode(String value, User user) {
         this.value = value;
+        this.user = user;
     }
 
     public Long getId() {
