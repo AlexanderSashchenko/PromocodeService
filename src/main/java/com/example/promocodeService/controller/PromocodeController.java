@@ -30,7 +30,6 @@ public class PromocodeController {
     public ModelAndView handleException(RuntimeException exception) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error");
-        modelAndView.setStatus(HttpStatusCode.valueOf(200));
         modelAndView.addObject("message", exception.getMessage());
         return modelAndView;
     }
