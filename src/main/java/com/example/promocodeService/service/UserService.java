@@ -14,6 +14,10 @@ public class UserService {
     }
 
     public User saveUser() {
-        return userRepository.save(new User());
+        return userRepository.saveAndFlush(new User());
+    }
+
+    public User getById(Long userId) {
+        return userRepository.getReferenceById(userId);
     }
 }

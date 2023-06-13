@@ -18,13 +18,15 @@ public class Promocode {
     )
     private Long id;
     private String value;
+    @OneToOne
+    private User user;
 
 
     public Promocode() {
 
     }
 
-    public Promocode(String value) {
+    public Promocode(String value, User user) {
         this.value = value;
     }
 
@@ -44,11 +46,20 @@ public class Promocode {
         this.value = value;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Promocode{" +
                 "id=" + id +
                 ", value='" + value + '\'' +
+                ", user=" + user +
                 '}';
     }
 }
