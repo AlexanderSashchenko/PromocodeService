@@ -15,10 +15,10 @@ public class PromocodeController {
         this.promocodeService = promocodeService;
     }
 
-    @PostMapping
+    @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<String> createPromocode() {
-        return promocodeService.createPromocode();
+    public Mono<String> createPromocode(@PathVariable("userId") Long userId) {
+        return promocodeService.createPromocode(userId);
     }
 
     @GetMapping("/user/{userId}")
