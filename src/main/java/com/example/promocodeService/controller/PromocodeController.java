@@ -1,7 +1,7 @@
 package com.example.promocodeService.controller;
 
 import com.example.promocodeService.service.PromocodeService;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import reactor.core.publisher.Mono;
@@ -17,11 +17,13 @@ public class PromocodeController {
     }
 
     @GetMapping
-    public Mono<String> getNewPromocode() {
-        return promocodeService.createNewPromocode();
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<String> createPromocode() {
+        return promocodeService.createPromocode();
     }
 
     @GetMapping("/user/{userId}")
+    @ResponseStatus(HttpStatus.OK)
     public String checkAndReturnIfExists(@PathVariable("userId") Long userId) {
         return promocodeService.getPromocodeValueByUserId(userId);
     }

@@ -1,34 +1,23 @@
 package com.example.promocodeService.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
 @Table(name = "promocodes")
 public class Promocode {
 
     @Id
-    @SequenceGenerator(
-            name = "promocodes_sequence",
-            sequenceName = "promocodes_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "promocodes_sequence"
-    )
     private Long id;
     private String value;
-    @OneToOne
-    private User user;
-
+    private Long user_id;
 
     public Promocode() {
 
     }
 
-    public Promocode(String value, User user) {
+    public Promocode(String value, Long user_id) {
         this.value = value;
-        this.user = user;
+        this.user_id = user_id;
     }
 
     public Long getId() {
@@ -47,12 +36,12 @@ public class Promocode {
         this.value = value;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUser_id() {
+        return user_id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
     }
 
     @Override
@@ -60,7 +49,7 @@ public class Promocode {
         return "Promocode{" +
                 "id=" + id +
                 ", value='" + value + '\'' +
-                ", user=" + user +
+                ", user_id=" + user_id +
                 '}';
     }
 }
