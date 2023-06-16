@@ -1,14 +1,14 @@
 package com.example.promocodeService.repository;
 
 import com.example.promocodeService.model.Promocode;
-import com.example.promocodeService.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.r2dbc.repository.Query;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 @Repository
-public interface PromocodeRepository extends JpaRepository<Promocode,Long> {
+public interface PromocodeRepository extends ReactiveCrudRepository<Promocode,Long> {
 
-    Optional<Promocode> findPromocodeByUser(User user);
+    @Query("SELECT * FROM promocodes WHERE user_id = :userId")
+    Mono<Promocode> findPromocodeByUserId(Long userId);
 }
