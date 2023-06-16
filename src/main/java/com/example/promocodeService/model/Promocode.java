@@ -10,14 +10,15 @@ public class Promocode {
     private Long id;
     private String value;
     private Long user_id;
+    private String status;
 
     public Promocode() {
 
     }
 
-    public Promocode(String value, Long user_id) {
-        this.value = value;
+    public Promocode(Long user_id, Status status) {
         this.user_id = user_id;
+        this.status = status.toString();
     }
 
     public Long getId() {
@@ -44,12 +45,21 @@ public class Promocode {
         this.user_id = user_id;
     }
 
+    public Status getStatus() {
+        return Status.valueOf(this.status);
+    }
+
+    public void setStatus(Status status) {
+        this.status = status.toString();
+    }
+
     @Override
     public String toString() {
         return "Promocode{" +
                 "id=" + id +
                 ", value='" + value + '\'' +
                 ", user_id=" + user_id +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
