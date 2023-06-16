@@ -3,6 +3,7 @@ package com.example.promocodeService.service;
 import com.example.promocodeService.model.User;
 import com.example.promocodeService.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public class UserService {
@@ -13,11 +14,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User saveUser() {
-        return userRepository.saveAndFlush(new User());
-    }
-
-    public User getById(Long userId) {
-        return userRepository.getReferenceById(userId);
+    public Mono<User> saveUser() {
+        return userRepository.save(new User());
     }
 }

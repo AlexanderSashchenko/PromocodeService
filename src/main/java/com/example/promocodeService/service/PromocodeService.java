@@ -1,10 +1,12 @@
 package com.example.promocodeService.service;
 
+import com.example.promocodeService.exception.ApiException;
+import com.example.promocodeService.exception.ExceptionType;
 import com.example.promocodeService.model.Promocode;
-import com.example.promocodeService.model.User;
 import com.example.promocodeService.repository.PromocodeRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import java.util.Objects;
 
 @Service
 public class PromocodeService {
@@ -21,18 +23,21 @@ public class PromocodeService {
         this.promocodeRepository = promocodeRepository;
     }
 
-    public Mono<String> createNewPromocode() {
-        User user = userService.saveUser();
-        return requestHandler.requestPromocode(user.getId())
+    /**
+     * Using .block() in non-blocking context for convenience as far as we are creating users on flight
+     * during promocode generation and not receiving userId from client
+     */
+    public Mono<String> createPromocode() {
+        Long userId = Objects.requireNonNull(userService.saveUser().block()).getId();
+        return requestHandler.requestPromocode(userId)
                 .doOnNext(promocodeValue -> {
-            Promocode promocode = new Promocode(promocodeValue, user);
-            promocodeRepository.save(promocode);
-        });
+                    promocodeRepository.save(new Promocode(promocodeValue, userId)).subscribe();
+                });
     }
 
     public String getPromocodeValueByUserId(Long userId) {
-        return promocodeRepository.findPromocodeByUser(userService.getById(userId))
-                .orElseThrow(() -> new RuntimeException("This user has not generated a promocode yet!"))
-                .getValue();
+        return promocodeRepository.findPromocodeByUserId(userId).blockOptional()
+                .orElseThrow(() -> new ApiException("This user has not generated a promocode yet!",
+                        ExceptionType.NO_RESULT)).getValue();
     }
 }
