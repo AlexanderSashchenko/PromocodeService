@@ -9,6 +9,6 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface PromocodeRepository extends ReactiveCrudRepository<Promocode,Long> {
 
-    @Query("FROM promocodes p WHERE p.user_id = ?1")
+    @Query("SELECT * FROM promocodes WHERE user_id = :userId")
     Mono<Promocode> findPromocodeByUserId(Long userId);
 }

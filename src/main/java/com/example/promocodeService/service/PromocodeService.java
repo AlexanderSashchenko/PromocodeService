@@ -1,5 +1,7 @@
 package com.example.promocodeService.service;
 
+import com.example.promocodeService.exception.ApiException;
+import com.example.promocodeService.exception.ExceptionType;
 import com.example.promocodeService.model.Promocode;
 import com.example.promocodeService.repository.PromocodeRepository;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,7 @@ public class PromocodeService {
 
     public String getPromocodeValueByUserId(Long userId) {
         return promocodeRepository.findPromocodeByUserId(userId).blockOptional()
-                .orElseThrow(() -> new RuntimeException("This user has not generated a promocode yet!"))
-                .getValue();
+                .orElseThrow(() -> new ApiException("This user has not generated a promocode yet!",
+                        ExceptionType.NO_RESULT)).getValue();
     }
 }
